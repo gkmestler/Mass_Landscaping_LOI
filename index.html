@@ -350,6 +350,10 @@
     .board-photo, .team-photo, .board-photo-wrap img {
       filter: grayscale(100%) !important; -webkit-filter: grayscale(100%) !important;
     }
+    /* Partners team photo stays in color */
+    .partners-photo {
+      filter: none !important; -webkit-filter: none !important;
+    }
 
     /* Kill all animations */
     .reveal, .reveal-left, .reveal-right { opacity: 1 !important; transform: none !important; transition: none !important; }
@@ -655,7 +659,7 @@
       <div class="section-divider"></div>
     </div>
     <div class="reveal" style="transition-delay:0.15s">
-      <img src="Photos/Methodic Team Photo2.jpg" alt="Methodic Partners" style="width:100%; border-radius:10px; margin-bottom:24px;">
+      <img src="Photos/Methodic Team Photo2.jpg" alt="Methodic Partners" class="partners-photo" style="width:100%; border-radius:10px; margin-bottom:24px;">
       <div style="display:flex; justify-content:center; gap:60px; text-align:center;">
         <div>
           <div class="board-name">Logan Mestler</div>
@@ -692,7 +696,7 @@
       </div>
       <div>
         <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 16px;">
-          <img class="team-photo" src="Photos/V-Shah Durran.png" alt="Shah Durran" style="object-position: center 20%;">
+          <img class="team-photo" src="Photos/V-Shah Durran.png" alt="Shah Durran" style="object-position: 55% 15%;">
           <div>
             <div class="board-name">Shah Durran</div>
             <div class="board-title">Technology &amp; Automation</div>
