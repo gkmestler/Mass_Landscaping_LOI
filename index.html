@@ -461,16 +461,13 @@
   }
   .loi-body ol li {
     font-size: 0.95rem; color: var(--rich-black); margin-bottom: 18px;
-    line-height: 1.7; padding-left: 44px; position: relative;
+    line-height: 1.7; padding-left: 36px; position: relative;
     counter-increment: initiatives;
   }
   .loi-body ol li::before {
-    content: counter(initiatives);
+    content: counter(initiatives) ".";
     position: absolute; left: 0; top: 0;
-    width: 30px; height: 30px; border-radius: 50%;
-    background: linear-gradient(135deg, var(--deep-blue), var(--sky-blue));
-    color: var(--white); font-weight: 600; font-size: 0.82rem;
-    display: flex; align-items: center; justify-content: center;
+    color: var(--deep-blue); font-weight: 700; font-size: 1rem;
   }
 
   /* ── Team Grid ── */
