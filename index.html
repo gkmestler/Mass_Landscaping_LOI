@@ -1078,13 +1078,16 @@
   <div class="footer-confidential">Confidential</div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"></script>
 <script>
+  // ── Seller signature data store ──
+  let sellerSigData = null;
+
   // ── Signature Modal ──
   function openSignModal() {
     const modal = document.getElementById('sigModal');
     modal.classList.add('open');
-    // Pre-fill date with today
     const today = new Date();
     document.getElementById('modalDateInput').value =
       String(today.getMonth()+1).padStart(2,'0') + '/' +
@@ -1112,7 +1115,10 @@
     if (!sig) { alert('Please type your signature.'); return; }
     if (!name) { alert('Please enter your full name.'); return; }
 
-    // Apply to seller signature area
+    // Store signature data for PDF generation
+    sellerSigData = { sig, name, title, date };
+
+    // Apply to seller signature area (visual)
     const sigArea = document.getElementById('sellerSigArea');
     const sigDisplay = document.getElementById('sellerSigDisplay');
     sigDisplay.className = 'sig-signed';
@@ -1129,38 +1135,114 @@
     closeSignModal();
   }
 
-  // ── PDF Generation ──
-  function generatePDF() {
+  // ── PDF Generation using pdf-lib ──
+  async function generatePDF() {
+    if (!sellerSigData) {
+      alert('Please sign the document first.');
+      return;
+    }
+
     const btn = document.getElementById('downloadBtn');
     const btnText = document.getElementById('btnText');
     btnText.textContent = 'Generating PDF...';
     btn.style.pointerEvents = 'none';
     btn.style.opacity = '0.7';
 
-    // Show all reveals
-    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    try {
+      // Fetch the pre-formatted base PDF
+      const pdfUrl = new URL('loi-base.pdf', window.location.href).href;
+      const existingPdfBytes = await fetch(pdfUrl).then(res => {
+        if (!res.ok) throw new Error('Could not load base PDF');
+        return res.arrayBuffer();
+      });
 
-    // Hide UI-only elements
-    const hideEls = document.querySelectorAll('.nav, .progress-bar, .hero-scroll-indicator, .download-bar, .sig-modal-overlay, .download-section, .sig-click-prompt');
-    hideEls.forEach(el => el.style.display = 'none');
+      const { PDFDocument, rgb, StandardFonts } = PDFLib;
 
-    // Hide dashed border on signed area
-    const sigArea = document.getElementById('sellerSigArea');
-    const origBorder = sigArea.style.border;
-    sigArea.style.border = 'none';
+      // Load the PDF
+      const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
-    window.scrollTo(0, 0);
+      // Register fontkit for custom fonts
+      pdfDoc.registerFontkit(fontkit);
 
-    // Use print for clean PDF - it respects CSS page breaks perfectly
-    setTimeout(() => {
-      window.print();
-      // Restore everything
-      hideEls.forEach(el => el.style.display = '');
-      sigArea.style.border = origBorder;
+      // Load the Caveat font for the signature (cursive handwriting style)
+      const caveatUrl = 'https://fonts.gstatic.com/s/caveat/v18/WnznHAc5bAfYB2QRah7pcpNvOx-pjfJ9SIKjYBxPigs.ttf';
+      const caveatFontBytes = await fetch(caveatUrl).then(res => res.arrayBuffer());
+      const caveatFont = await pdfDoc.embedFont(caveatFontBytes);
+
+      // Also embed a standard font for name/date/title
+      const timesFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+
+      // Get page 15 (index 14) — seller signature page
+      const sigPage = pdfDoc.getPages()[14];
+      const pageHeight = sigPage.getHeight();
+
+      // PDF coordinates are from bottom-left, pdfplumber coords are from top-left
+      // Convert: pdfY = pageHeight - pdfplumberY
+      // Signature label is at y=119 from top → value goes above at ~y=105 from top
+      // In PDF coords: pageHeight - 105
+
+      const sigColor = rgb(0.04, 0.04, 0.04);
+      const textColor = rgb(0.1, 0.1, 0.1);
+
+      // Draw signature (cursive, larger)
+      sigPage.drawText(sellerSigData.sig, {
+        x: 72,
+        y: pageHeight - 113,
+        size: 22,
+        font: caveatFont,
+        color: sigColor,
+      });
+
+      // Draw date
+      sigPage.drawText(sellerSigData.date, {
+        x: 72,
+        y: pageHeight - 165,
+        size: 11,
+        font: timesFont,
+        color: textColor,
+      });
+
+      // Draw name
+      sigPage.drawText(sellerSigData.name, {
+        x: 72,
+        y: pageHeight - 218,
+        size: 11,
+        font: timesFont,
+        color: textColor,
+      });
+
+      // Draw title
+      sigPage.drawText(sellerSigData.title, {
+        x: 72,
+        y: pageHeight - 270,
+        size: 11,
+        font: timesFont,
+        color: textColor,
+      });
+
+      // Save and download
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Mass_Landscape_LOI_Signed.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
       btnText.textContent = 'Download Signed Document';
       btn.style.pointerEvents = '';
       btn.style.opacity = '';
-    }, 300);
+    } catch (err) {
+      console.error('PDF generation error:', err);
+      alert('Error generating PDF: ' + err.message);
+      btnText.textContent = 'Download Signed Document';
+      btn.style.pointerEvents = '';
+      btn.style.opacity = '';
+    }
   }
 
   // Scroll Reveal
