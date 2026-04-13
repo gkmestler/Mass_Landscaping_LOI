@@ -653,19 +653,27 @@
       <div class="section-divider"></div>
     </div>
     <div class="reveal" style="transition-delay:0.15s">
-      <img src="Photos/Methodic Team Photo2.jpg" alt="Methodic Partners" class="partners-photo" style="width:100%; border-radius:10px; margin-bottom:24px;">
-      <div style="display:flex; justify-content:center; gap:60px; text-align:center;">
-        <div>
-          <div class="board-name">Logan Mestler</div>
-          <div class="board-title">Co-Founding Managing Partner</div>
+      <div style="display:flex; flex-direction:column; gap:16px; max-width:480px;">
+        <div style="display:flex; align-items:center; gap:20px;">
+          <div style="width:80px; height:80px; flex-shrink:0; overflow:hidden; border-radius:50%;"><img src="Photos/Logan Mestler Google PIc.jpg" alt="Logan Mestler" style="width:100%; height:100%; object-fit:cover; transform:scale(1.3) translateY(5%); transform-origin:center; filter:grayscale(100%);"></div>
+          <div>
+            <div class="board-name">Logan Mestler</div>
+            <div class="board-title">Co-Founding Managing Partner</div>
+          </div>
         </div>
-        <div>
-          <div class="board-name">Gavin Mestler</div>
-          <div class="board-title">Co-Founding Managing Partner</div>
+        <div style="display:flex; align-items:center; gap:20px;">
+          <div style="width:80px; height:80px; flex-shrink:0; overflow:hidden; border-radius:50%;"><img src="Photos/Gavin Mestler.jpeg" alt="Gavin Mestler" style="width:100%; height:100%; object-fit:cover; object-position:center 70%; filter:grayscale(100%);"></div>
+          <div>
+            <div class="board-name">Gavin Mestler</div>
+            <div class="board-title">Co-Founding Managing Partner</div>
+          </div>
         </div>
-        <div>
-          <div class="board-name">Dean Farber</div>
-          <div class="board-title">Co-Founding Managing Partner</div>
+        <div style="display:flex; align-items:center; gap:20px;">
+          <div style="width:80px; height:80px; flex-shrink:0; overflow:hidden; border-radius:50%;"><img src="Photos/Dean-photo2.png" alt="Dean Farber" style="width:100%; height:100%; object-fit:cover; transform:scale(1.3) translateY(3%); transform-origin:center; filter:grayscale(100%);"></div>
+          <div>
+            <div class="board-name">Dean Farber</div>
+            <div class="board-title">Co-Founding Managing Partner</div>
+          </div>
         </div>
       </div>
     </div>
@@ -676,19 +684,16 @@
     <div class="reveal">
       <div class="section-label">Operating Team</div>
       <div class="section-divider"></div>
+      <p style="font-size:1rem; color:var(--black); margin-bottom:24px; max-width:720px;">We have <strong>interviewed, vetted, and hand-selected the following operators specifically for Mass Landscaping</strong>. Both are on board and prepared to step in post-acquisition to run and scale the business from day one.</p>
     </div>
-    <div class="reveal" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; transition-delay:0.15s">
-      <div>
-        <div style="margin-bottom: 16px;">
-          <div class="board-title">Operations</div>
-        </div>
-        <div class="board-bio">COO/CEO with 12+ years of experience scaling service-based businesses. Grew revenue from $2M to $5M+ while increasing profitability. Managed 60+ employees at peak season with full P&amp;L ownership, built an 8-person leadership team with defined KPIs, and implemented ERP, CRM, and scheduling systems to drive operational efficiency at scale.</div>
+    <div class="reveal" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; transition-delay:0.15s">
+      <div style="background: linear-gradient(135deg, rgba(197,220,240,0.18) 0%, rgba(137,180,212,0.10) 100%); border: 1px solid var(--ice-blue); border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(47,91,124,0.06);">
+        <div class="board-title" style="font-size:1.15rem; margin-bottom:10px;">Operations Leader</div>
+        <div class="board-bio">COO/CEO with <strong>12+ years of experience scaling landscaping and hardscaping businesses</strong>. At her previous company, she grew revenue from $2M to $5M+ while increasing profitability, managed 60+ employees at peak season with full P&amp;L ownership, built an 8-person leadership team with defined KPIs, and implemented ERP, CRM, and scheduling systems to drive operational efficiency at scale.</div>
       </div>
-      <div>
-        <div style="margin-bottom: 16px;">
-          <div class="board-title">Technology &amp; Automation</div>
-        </div>
-        <div class="board-bio">Full stack developer and founder of a business automation firm that has deployed hundreds of AI-driven systems for businesses across the United States. Certified automation specialist with expertise in building seamless, high-performance automation solutions for operational efficiency and scalable growth.</div>
+      <div style="background: linear-gradient(135deg, rgba(197,220,240,0.18) 0%, rgba(137,180,212,0.10) 100%); border: 1px solid var(--ice-blue); border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(47,91,124,0.06);">
+        <div class="board-title" style="font-size:1.15rem; margin-bottom:10px;">Technology &amp; Automation Lead</div>
+        <div class="board-bio"><strong>Full stack developer and founder of a business automation firm</strong> that has deployed hundreds of AI-driven systems for businesses across the United States. Certified automation specialist with expertise in building seamless, high-performance automation solutions for operational efficiency and scalable growth.</div>
       </div>
     </div>
   </div>
@@ -934,7 +939,7 @@
     </div>
 
     <!-- Signature Block -->
-    <div class="signature-grid reveal" id="signatures">
+    <div class="signature-grid reveal" id="signatures" style="display:none;">
       <div class="sig-block">
         <h4>MASS LANDSCAPE INC. (SELLER)</h4>
         <div class="sig-person">
@@ -1005,14 +1010,14 @@
 
     <!-- Download after signing -->
     <div class="download-section reveal" id="downloadSection">
-      <p>After signing, download the completed document below.</p>
+      <p>Download a copy of this Letter of Intent below.</p>
       <button class="cta-btn download-variant" id="downloadBtn" onclick="generatePDF()">
         <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        <span id="btnText">Download Signed Document</span>
+        <span id="btnText">Download Document</span>
       </button>
     </div>
   </div>
